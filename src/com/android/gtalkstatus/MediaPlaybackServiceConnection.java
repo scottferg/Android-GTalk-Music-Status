@@ -21,10 +21,13 @@ public class MediaPlaybackServiceConnection implements ServiceConnection {
         mService = IMediaPlaybackService.Stub.asInterface(aService);
 
         try {
-            Log.i(LOG_NAME, "Playing track: " + mService.getTrackName());
-            Log.i(LOG_NAME, "Playing artist: " + mService.getArtistName());
+            String trackName = mService.getTrackName();
+            String artistName = mService.getArtistName();
 
-            String statusMessage = "Listening to: " + mService.getArtistName() + " - " + mService.getTrackName();
+            Log.i(LOG_NAME, "Playing track: " + trackName);
+            Log.i(LOG_NAME, "Playing artist: " + artistName);
+
+            String statusMessage = "Listening to: " + artistName + " - " + trackName;
 
             XMPPTransfer gtalkConnector = new XMPPTransfer("username", "password");
             gtalkConnector.setStatus(statusMessage);

@@ -7,14 +7,9 @@ import org.jivesoftware.smack.XMPPException;
 
 public class XMPPTransfer {
 
-    private String mUsername;
-    private String mPassword;
     private XMPPConnection mConnection;
 
     public XMPPTransfer(String aUsername, String aPassword) {
-
-        mUsername = aUsername;
-        mPassword = aPassword;
 
         ConnectionConfiguration connectionConfig = 
             new ConnectionConfiguration("talk.google.com", 5222, "gmail.com");
@@ -23,7 +18,7 @@ public class XMPPTransfer {
 
         try {
             mConnection.connect();
-            mConnection.login(mUsername, mPassword);
+            mConnection.login(aUsername, aPassword);
 
         } catch (XMPPException e) {
             // Probably should handle this better
