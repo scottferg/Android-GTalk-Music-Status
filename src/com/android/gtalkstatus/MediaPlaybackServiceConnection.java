@@ -22,7 +22,7 @@ public class MediaPlaybackServiceConnection implements ServiceConnection {
         Log.i(LOG_NAME, "Connected! Name: " + aName.getClassName());
 
         mService = IMediaPlaybackService.Stub.asInterface(aService);
-        // TODO: Cache this connection
+        // Cache this connection
         mGTalkConnector = new XMPPTransfer("username", "password");
 
         getUpdate();
@@ -30,6 +30,8 @@ public class MediaPlaybackServiceConnection implements ServiceConnection {
 
     public void onServiceDisconnected(ComponentName aName) {
         Log.i(LOG_NAME, "Service disconnected");
+        // Set a blank status message
+        mGTalkConnector.setStatus("");
     }
 
     public void getUpdate() {
