@@ -3,9 +3,9 @@ package com.android.gtalkstatus;
 import android.app.Activity;
 import android.os.Bundle;
 import android.content.Intent;
-import android.content.ServiceConnection;
+import android.util.Log;
 
-import com.android.gtalkstatus.MediaPlaybackServiceConnection;
+import com.android.gtalkstatus.GTalkStatusUpdater;
 
 public class GTalkStatusActivity extends Activity
 {
@@ -16,10 +16,19 @@ public class GTalkStatusActivity extends Activity
         super.onCreate(savedInstanceState);
         // setContentView(R.layout.main);
 
-        Intent serviceIntent = new Intent();
-        serviceIntent.setClassName("com.android.music", "com.android.music.MediaPlaybackService");
-        ServiceConnection connection = new MediaPlaybackServiceConnection();
-
-        this.bindService(serviceIntent, connection, 0);
+        Log.e("GTalkStatusActivity", "STARTING!!!");
+        Log.e("GTalkStatusActivity", "STARTING!!!");
+        Log.e("GTalkStatusActivity", "STARTING!!!");
+        Log.e("GTalkStatusActivity", "STARTING!!!");
+        Log.e("GTalkStatusActivity", "STARTING!!!");
+        Log.e("GTalkStatusActivity", "STARTING!!!");
+        startService(new Intent(GTalkStatusActivity.this, GTalkStatusUpdater.class));
+        Log.e("GTalkStatusActivity", "STARTED!!!");
+        Log.e("GTalkStatusActivity", "STARTED!!!");
+        Log.e("GTalkStatusActivity", "STARTED!!!");
+        Log.e("GTalkStatusActivity", "STARTED!!!");
+        Log.e("GTalkStatusActivity", "STARTED!!!");
+        Log.e("GTalkStatusActivity", "STARTED!!!");
+        Log.e("GTalkStatusActivity", "STARTED!!!");
     }
 }

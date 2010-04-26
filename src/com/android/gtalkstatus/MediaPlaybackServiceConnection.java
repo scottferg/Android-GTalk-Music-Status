@@ -12,6 +12,8 @@ public class MediaPlaybackServiceConnection implements ServiceConnection {
 
     public static final String LOG_NAME = "MediaPlaybackServiceConnection";
 
+    public String mCurrentArtist;
+    public String mCurrentTrack;
     public IMediaPlaybackService mService;
 
     public void onServiceConnected(ComponentName aName, IBinder aService) {
@@ -19,25 +21,34 @@ public class MediaPlaybackServiceConnection implements ServiceConnection {
         Log.i(LOG_NAME, "Connected! Name: " + aName.getClassName());
 
         mService = IMediaPlaybackService.Stub.asInterface(aService);
-
-        try {
-            String trackName = mService.getTrackName();
-            String artistName = mService.getArtistName();
-
-            Log.i(LOG_NAME, "Playing track: " + trackName);
-            Log.i(LOG_NAME, "Playing artist: " + artistName);
-
-            String statusMessage = "Listening to: " + artistName + " - " + trackName;
-
-            XMPPTransfer gtalkConnector = new XMPPTransfer("username", "password");
-            gtalkConnector.setStatus(statusMessage);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
     }
 
     public void onServiceDisconnected(ComponentName aName) {
         Log.i(LOG_NAME, "Service disconnected");
+    }
+
+    public void getUpdate() {
+
+        try {
+            String trackName = mService.getTrackName();
+
+            if (trackName != mCurrentTrack) {
+                mCurrentTrack = trackName;
+                mCurrentArtist = mService.getArtistName();
+            }
+
+            Log.i(LOG_NAME, "Playing track: " + mCurrentTrack);
+            Log.i(LOG_NAME, "Playing artist: " + mCurrentArtist);
+
+            if (mService.isPlaying()) {
+                String statusMessage = "Listening to: " + mCurrentArtist + " - " + mCurrentTrack;
+
+                XMPPTransfer gtalkConnector = new XMPPTransfer("username", "password");
+                gtalkConnector.setStatus(statusMessage);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 }
