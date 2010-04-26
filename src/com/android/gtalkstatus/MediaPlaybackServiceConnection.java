@@ -35,17 +35,18 @@ public class MediaPlaybackServiceConnection implements ServiceConnection {
             if (trackName != mCurrentTrack) {
                 mCurrentTrack = trackName;
                 mCurrentArtist = mService.getArtistName();
+
+                if (mService.isPlaying()) {
+                    String statusMessage = "Listening to: " + mCurrentArtist + " - " + mCurrentTrack;
+
+                    XMPPTransfer gtalkConnector = new XMPPTransfer("username", "password");
+                    gtalkConnector.setStatus(statusMessage);
+                }
             }
 
             Log.i(LOG_NAME, "Playing track: " + mCurrentTrack);
             Log.i(LOG_NAME, "Playing artist: " + mCurrentArtist);
 
-            if (mService.isPlaying()) {
-                String statusMessage = "Listening to: " + mCurrentArtist + " - " + mCurrentTrack;
-
-                XMPPTransfer gtalkConnector = new XMPPTransfer("username", "password");
-                gtalkConnector.setStatus(statusMessage);
-            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
