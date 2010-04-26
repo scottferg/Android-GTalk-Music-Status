@@ -6,6 +6,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.android.music.IMediaPlaybackService;
+import com.android.gtalkstatus.XMPPTransfer;
 
 public class MediaPlaybackServiceConnection implements ServiceConnection {
 
@@ -22,6 +23,11 @@ public class MediaPlaybackServiceConnection implements ServiceConnection {
         try {
             Log.i(LOG_NAME, "Playing track: " + mService.getTrackName());
             Log.i(LOG_NAME, "Playing artist: " + mService.getArtistName());
+
+            String statusMessage = "Listening to: " + mService.getArtistName() + " - " + mService.getTrackName();
+
+            XMPPTransfer gtalkConnector = new XMPPTransfer("username", "password");
+            gtalkConnector.setStatus(statusMessage);
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);

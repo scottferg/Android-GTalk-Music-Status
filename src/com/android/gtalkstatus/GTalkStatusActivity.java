@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 
 import com.android.gtalkstatus.MediaPlaybackServiceConnection;
-import com.android.music.IMediaPlaybackService;
 
 public class GTalkStatusActivity extends Activity
 {
