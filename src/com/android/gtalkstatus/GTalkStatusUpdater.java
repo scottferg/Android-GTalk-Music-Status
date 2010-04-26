@@ -13,7 +13,7 @@ import com.android.gtalkstatus.MediaPlaybackServiceConnection;
 public class GTalkStatusUpdater extends Service {
 
     public static final String LOG_NAME = "GTalkStatusUpdaterService";
-    private static final int UPDATE_INTERVAL = 60000;
+    private static final int UPDATE_INTERVAL = 240000;
 
     private Timer mTimer = new Timer();
     private ServiceConnection mConnection;

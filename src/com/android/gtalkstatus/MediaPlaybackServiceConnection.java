@@ -21,6 +21,8 @@ public class MediaPlaybackServiceConnection implements ServiceConnection {
         Log.i(LOG_NAME, "Connected! Name: " + aName.getClassName());
 
         mService = IMediaPlaybackService.Stub.asInterface(aService);
+
+        getUpdate();
     }
 
     public void onServiceDisconnected(ComponentName aName) {
