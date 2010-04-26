@@ -12,15 +12,18 @@ public class MediaPlaybackServiceConnection implements ServiceConnection {
 
     public static final String LOG_NAME = "MediaPlaybackServiceConnection";
 
-    public String mCurrentArtist;
-    public String mCurrentTrack;
-    public IMediaPlaybackService mService;
+    private String mCurrentArtist;
+    private String mCurrentTrack;
+    private IMediaPlaybackService mService;
+    private XMPPTransfer mGTalkConnector;
 
     public void onServiceConnected(ComponentName aName, IBinder aService) {
 
         Log.i(LOG_NAME, "Connected! Name: " + aName.getClassName());
 
         mService = IMediaPlaybackService.Stub.asInterface(aService);
+        // TODO: Cache this connection
+        mGTalkConnector = new XMPPTransfer("username", "password");
 
         getUpdate();
     }
@@ -43,9 +46,7 @@ public class MediaPlaybackServiceConnection implements ServiceConnection {
                     String statusMessage = "Listening to: " + mCurrentArtist + " - " + mCurrentTrack;
 
                     // TODO: Cache username and password
-                    // TODO: Cache this connection
-                    XMPPTransfer gtalkConnector = new XMPPTransfer("username", "password");
-                    gtalkConnector.setStatus(statusMessage);
+                    mGTalkConnector.setStatus(statusMessage);
                 }
             }
 
