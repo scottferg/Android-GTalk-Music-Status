@@ -39,8 +39,11 @@ public class MediaPlaybackServiceConnection implements ServiceConnection {
                 mCurrentArtist = mService.getArtistName();
 
                 if (mService.isPlaying()) {
+
                     String statusMessage = "Listening to: " + mCurrentArtist + " - " + mCurrentTrack;
 
+                    // TODO: Cache username and password
+                    // TODO: Cache this connection
                     XMPPTransfer gtalkConnector = new XMPPTransfer("username", "password");
                     gtalkConnector.setStatus(statusMessage);
                 }
