@@ -13,7 +13,7 @@ import com.android.gtalkstatus.MediaPlaybackServiceConnection;
 public class GTalkStatusUpdater extends Service {
 
     public static final String LOG_NAME = "GTalkStatusUpdaterService";
-    private static final int UPDATE_INTERVAL = 240000;
+    private static final int UPDATE_INTERVAL = 10000;
 
     private Timer mTimer = new Timer();
     private ServiceConnection mConnection;
@@ -46,7 +46,6 @@ public class GTalkStatusUpdater extends Service {
         Intent serviceIntent = new Intent();
 
         serviceIntent.setClassName("com.android.music", "com.android.music.MediaPlaybackService");
-        // TODO: Does this necessarily need to be cached?  Current service runs at 5.8mb
         mConnection = new MediaPlaybackServiceConnection();
 
         Log.i(LOG_NAME, "Connection created");
