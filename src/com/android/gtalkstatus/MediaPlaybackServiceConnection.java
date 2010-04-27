@@ -31,7 +31,7 @@ public class MediaPlaybackServiceConnection implements ServiceConnection {
     public void onServiceDisconnected(ComponentName aName) {
         Log.i(LOG_NAME, "Service disconnected");
         // Set a blank status message
-        mGTalkConnector.setStatus("");
+        mGTalkConnector.setStatus("", 25);
     }
 
     public void getUpdate() {

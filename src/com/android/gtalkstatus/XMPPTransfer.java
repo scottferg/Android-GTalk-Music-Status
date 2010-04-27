@@ -27,11 +27,15 @@ public class XMPPTransfer {
     }
 
     public void setStatus(String aStatusMessage) {
+        setStatus(aStatusMessage, 25);
+    }
+
+    public void setStatus(String aStatusMessage, int aPriority) {
 
         Presence presence = new Presence(Presence.Type.available);
 
         presence.setStatus(aStatusMessage);
-        presence.setPriority(24);
+        presence.setPriority(aPriority);
         presence.setMode(Presence.Mode.available);
 
         mConnection.sendPacket(presence);
