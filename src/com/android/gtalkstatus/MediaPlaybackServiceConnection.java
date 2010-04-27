@@ -45,7 +45,7 @@ public class MediaPlaybackServiceConnection implements ServiceConnection {
 
                 if (mService.isPlaying()) {
 
-                    String statusMessage = "Listening to: " + mCurrentArtist + " - " + mCurrentTrack;
+                    String statusMessage = "\u266B " + mCurrentArtist + " - " + mCurrentTrack;
 
                     // TODO: Cache username and password
                     mGTalkConnector.setStatus(statusMessage);
