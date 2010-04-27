@@ -8,14 +8,24 @@ import android.util.Log;
 import com.android.music.IMediaPlaybackService;
 import com.android.gtalkstatus.XMPPTransfer;
 
+import com.android.gtalkstatus.GTalkStatusGlobal;
+
 public class MediaPlaybackServiceConnection implements ServiceConnection {
 
     public static final String LOG_NAME = "MediaPlaybackServiceConnection";
 
     private String mCurrentArtist;
     private String mCurrentTrack;
+    private String mUsername;
+    private String mPassword;
     private IMediaPlaybackService mService;
     private XMPPTransfer mGTalkConnector;
+
+    public MediaPlaybackServiceConnection(String aUsername, String aPassword) {
+
+        mUsername = aUsername;
+        mPassword = aPassword;
+    }
 
     public void onServiceConnected(ComponentName aName, IBinder aService) {
 
@@ -23,7 +33,7 @@ public class MediaPlaybackServiceConnection implements ServiceConnection {
 
         mService = IMediaPlaybackService.Stub.asInterface(aService);
         // Cache this connection
-        mGTalkConnector = new XMPPTransfer("username", "password");
+        mGTalkConnector = new XMPPTransfer(mUsername, mPassword);
 
         getUpdate();
     }
@@ -31,7 +41,7 @@ public class MediaPlaybackServiceConnection implements ServiceConnection {
     public void onServiceDisconnected(ComponentName aName) {
         Log.i(LOG_NAME, "Service disconnected");
         // Set a blank status message
-        mGTalkConnector.setStatus("", 25);
+        mGTalkConnector.setStatus("", 0);
     }
 
     public void getUpdate() {
@@ -47,8 +57,10 @@ public class MediaPlaybackServiceConnection implements ServiceConnection {
 
                     String statusMessage = "\u266B " + mCurrentArtist + " - " + mCurrentTrack;
 
-                    // TODO: Cache username and password
                     mGTalkConnector.setStatus(statusMessage);
+                } else {
+                    // No need to report anything, music is stopped
+                    mGTalkConnector.setStatus("", 0);
                 }
             }
 

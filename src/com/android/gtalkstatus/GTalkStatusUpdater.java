@@ -24,7 +24,7 @@ public class GTalkStatusUpdater extends Service {
         super.onCreate();
     
         Log.i(LOG_NAME, "Service created");
-
+        
         startService();
     }
 
@@ -43,10 +43,15 @@ public class GTalkStatusUpdater extends Service {
 
     private void startService() {
 
+        GTalkStatusGlobal appState = ((GTalkStatusGlobal) getApplicationContext());
+
+        String username = appState.getUsername();
+        String password = appState.getPassword();
+
         Intent serviceIntent = new Intent();
 
         serviceIntent.setClassName("com.android.music", "com.android.music.MediaPlaybackService");
-        mConnection = new MediaPlaybackServiceConnection();
+        mConnection = new MediaPlaybackServiceConnection(username, password);
 
         Log.i(LOG_NAME, "Connection created");
 
