@@ -1,41 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/widget29"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
->
-    <EditText
-        android:id="@+id/txtUsername"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10px"
-        android:layout_marginBottom="5px"
-        android:text="Username"
-        android:textSize="18sp"
-        android:layout_gravity="center_horizontal"
-    >
-    </EditText>
-    <EditText
-        android:id="@+id/txtPassword"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5px"
-        android:layout_marginBottom="5px"
-        android:text="Password"
-        android:textSize="18sp"
-        android:password="true"
-        android:layout_gravity="center_horizontal"
-    >
-    </EditText>
-    <Button
-        android:id="@+id/btnSubmit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5px"
-        android:text="Login"
-        android:layout_gravity="center_horizontal"
-    >
-    </Button>
-</LinearLayout>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"> 
+    <PreferenceCategory android:title="Settings">
+        <com.android.gtalkstatus.GTalkEditCredentials
+            android:title="GTalk Credentials"
+            android:dialogTitle="GTalk Credentials"
+            android:summary="Log into your GTalk account"
+            android:positiveButtonText="Okay"
+            android:negativeButtonText="Cancel"
+            android:key="edit_credentials" />
+    </PreferenceCategory>
+</PreferenceScreen>

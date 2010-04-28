@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">GTalkStatusActivity</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
 </resources>
