@@ -36,6 +36,20 @@ public class GTalkStatusUpdater extends Service {
         stopService();
     }
 
+    @Override
+    public int onStartCommand(Intent aIntent, int aFlags, int aStartId) {
+        
+        onStart(aIntent, aStartId);
+
+        return START_NOT_STICKY;
+    }
+
+    @Override
+    public void onStart(Intent aIntent, int aStartId) {
+
+
+    }
+
     public IBinder onBind(Intent aIntent) {
 
         return null;
@@ -43,15 +57,10 @@ public class GTalkStatusUpdater extends Service {
 
     private void startService() {
 
-        GTalkStatusGlobal appState = ((GTalkStatusGlobal) getApplicationContext());
-
-        String username = appState.getUsername();
-        String password = appState.getPassword();
-
         Intent serviceIntent = new Intent();
 
         serviceIntent.setClassName("com.android.music", "com.android.music.MediaPlaybackService");
-        mConnection = new MediaPlaybackServiceConnection(username, password);
+        mConnection = new MediaPlaybackServiceConnection();
 
         Log.i(LOG_NAME, "Connection created");
 

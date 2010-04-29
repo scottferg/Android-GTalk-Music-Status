@@ -9,13 +9,10 @@ import android.content.SharedPreferences.Editor;
 import android.widget.EditText;
 import android.view.View;
 
-import com.android.gtalkstatus.GTalkStatusGlobal;
-import com.android.gtalkstatus.GTalkStatusUpdater;
-
 public class GTalkEditCredentials extends DialogPreference {
 
-    private String mUsername;
-    private String mPassword;
+    private EditText mUsername;
+    private EditText mPassword;
 
     public GTalkEditCredentials(Context aContext, AttributeSet aAttributes) {
 
@@ -25,8 +22,8 @@ public class GTalkEditCredentials extends DialogPreference {
 
     @Override
     protected void onBindDialogView(View aView) {
-        mUsername = ((EditText) aView.findViewById(R.id.txtUsername)).toString();
-        mPassword = ((EditText) aView.findViewById(R.id.txtPassword)).toString();
+        mUsername = (EditText) aView.findViewById(R.id.txtUsername);
+        mPassword = (EditText) aView.findViewById(R.id.txtPassword);
     }
 
     @Override
@@ -35,16 +32,14 @@ public class GTalkEditCredentials extends DialogPreference {
         super.onDialogClosed(aPositiveResult);
 
         if (aPositiveResult) {
-            SharedPreferences prefs = getContext().getSharedPreferences("StatusPrefs", 0);
+            SharedPreferences prefs = getContext().getSharedPreferences("GTalkStatusPrefs", 0);
             Editor prefsEditor = prefs.edit();
 
-            prefsEditor.putString("USERNAME", mUsername);
-            prefsEditor.putString("PASSWORD", mPassword);
+            prefsEditor.putString("USERNAME", mUsername.getText().toString());
+            prefsEditor.putString("PASSWORD", mPassword.getText().toString());
             prefsEditor.commit();
-                
-            /*
-            getContext().startService(new Intent(GTalkEditCredentials.this, GTalkStatusUpdater.class));
-            */
+
+            GTalkStatusApplication.getInstance().updateConnection();
         }
     }
 }

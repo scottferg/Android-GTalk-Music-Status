@@ -26,6 +26,10 @@ public class XMPPTransfer {
         }
     }
 
+    public void disconnect() {
+        mConnection.disconnect();
+    }
+
     public void setStatus(String aStatusMessage) {
         setStatus(aStatusMessage, 25);
     }
