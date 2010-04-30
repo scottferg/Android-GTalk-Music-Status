@@ -7,15 +7,9 @@ import android.os.IBinder;
 import android.content.ComponentName;
 import android.os.IBinder;
 
-import java.util.TimerTask;
-import java.util.Timer;
-
 import com.android.music.IMediaPlaybackService;
 
 public class GTalkStatusUpdater extends Service {
-
-    public static final String LOG_NAME = "GTalkStatusUpdaterService";
-    private static final int UPDATE_INTERVAL = 30000;
     
     @Override
     public void onCreate() {
