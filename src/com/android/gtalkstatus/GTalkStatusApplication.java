@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.content.Intent;
 import android.content.Context;
-import android.util.Log;
 
 public class GTalkStatusApplication extends Application {
 
@@ -50,7 +49,6 @@ public class GTalkStatusApplication extends Application {
     public void updateConnection() {
 
         if (mGTalkConnector != null) {
-            Log.i(LOG_NAME, "Disconnecting existing connector");
             mGTalkConnector.disconnect();
         }
 
@@ -58,7 +56,6 @@ public class GTalkStatusApplication extends Application {
         String username = settings.getString("USERNAME", "");
         String password = settings.getString("PASSWORD", "");
 
-        Log.i(LOG_NAME, "Creating new XMPP connection");
         mGTalkConnector = new XMPPTransfer(username, password);
     }
 

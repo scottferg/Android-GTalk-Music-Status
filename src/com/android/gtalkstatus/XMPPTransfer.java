@@ -30,6 +30,10 @@ public class XMPPTransfer {
         mConnection.disconnect();
     }
 
+    public boolean isConnected() {
+        return mConnection.isConnected();        
+    }
+
     public void setStatus(String aStatusMessage) {
         setStatus(aStatusMessage, 25);
     }

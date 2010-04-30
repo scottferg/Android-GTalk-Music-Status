@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.app.Service;
 import android.os.IBinder;
-import android.util.Log;
 import android.content.ComponentName;
 import android.os.IBinder;
 
@@ -23,10 +22,7 @@ public class GTalkStatusUpdater extends Service {
     
     @Override
     public void onCreate() {
-
         super.onCreate();
-    
-        Log.i(LOG_NAME, "Service created");
     }
 
     @Override
@@ -40,12 +36,9 @@ public class GTalkStatusUpdater extends Service {
     @Override
     public void onStart(Intent aIntent, int aStartId) {
 
-        Log.i(LOG_NAME, aIntent.getAction());
-
         if (aIntent.getAction().equals("com.android.music.playbackcomplete")
                 || aIntent.getAction().equals("com.htc.music.playbackcomplete")) {
             // The song has ended, stop the service
-            Log.i(LOG_NAME, "Playback has been completed, stopping the service");
             stopSelf();
         } else if (aIntent.getAction().equals("com.android.music.playstatechanged") 
                 || aIntent.getAction().equals("com.android.music.metachanged")
@@ -56,19 +49,21 @@ public class GTalkStatusUpdater extends Service {
                 public void onServiceConnected(ComponentName aName, IBinder aService) {
                     IMediaPlaybackService service = IMediaPlaybackService.Stub.asInterface(aService);
 
+                    // We disconnect from XMPP if we don't need to keep the connection alive.
+                    // Reconnect if necessary.
+                    if (! GTalkStatusApplication.getInstance().getConnector().isConnected()) {
+                        GTalkStatusApplication.getInstance().updateConnection();
+                    }
+
                     try {
                         String currentTrack = service.getTrackName();
                         String currentArtist = service.getArtistName();
 
                         if (service.isPlaying()) {
-
-                            Log.i(LOG_NAME, "Music playing");
                             String statusMessage = "\u266B " + currentArtist + " - " + currentTrack;
 
                             GTalkStatusApplication.getInstance().getConnector().setStatus(statusMessage);
                         } else {
-                            Log.i(LOG_NAME, "Music is not playing");
-
                             GTalkStatusApplication.getInstance().getConnector().disconnect();
                             stopSelf();
                         }
@@ -81,7 +76,6 @@ public class GTalkStatusUpdater extends Service {
                 }
 
                 public void onServiceDisconnected(ComponentName aName) {
-                    Log.i(LOG_NAME, "Service disconnected");
                     GTalkStatusApplication.getInstance().getConnector().setStatus("", 0);
                 }
             }, 0);
