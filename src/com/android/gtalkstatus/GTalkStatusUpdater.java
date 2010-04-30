@@ -16,9 +16,6 @@ public class GTalkStatusUpdater extends Service {
 
     public static final String LOG_NAME = "GTalkStatusUpdaterService";
     private static final int UPDATE_INTERVAL = 30000;
-
-    private Timer mTimer = new Timer();
-    private ServiceConnection mConnection;
     
     @Override
     public void onCreate() {
