@@ -3,6 +3,7 @@ package com.android.gtalkstatus;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.content.Intent;
+import android.content.Context;
 import android.util.Log;
 
 public class GTalkStatusApplication extends Application {
@@ -37,9 +38,13 @@ public class GTalkStatusApplication extends Application {
         super.onTerminate();
     }
 
-    public void startService() {
+    public void startService(Context aContext, Intent aIntent) {
 
-        startService(new Intent(this, GTalkStatusUpdater.class));
+        Intent serviceIntent = new Intent(this, GTalkStatusUpdater.class);
+        serviceIntent.setAction(aIntent.getAction());
+        serviceIntent.putExtras(aIntent);
+
+        aContext.startService(serviceIntent);
     }
 
     public void updateConnection() {
