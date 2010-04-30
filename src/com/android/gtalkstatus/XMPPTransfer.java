@@ -35,7 +35,7 @@ public class XMPPTransfer {
     }
 
     public void setStatus(String aStatusMessage) {
-        setStatus(aStatusMessage, 25);
+        setStatus(aStatusMessage, 30);
     }
 
     public void setStatus(String aStatusMessage, int aPriority) {
