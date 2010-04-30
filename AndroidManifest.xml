@@ -21,8 +21,6 @@
                 <action android:name="com.htc.music.metachanged" />
                 <action android:name="com.htc.music.playbackcomplete" />
                 <action android:name="com.htc.music.playstatechanged" />
-                <action android:name="com.adam.aslfms.notify.playstatechanged" />
-                <action android:name="net.jjc1138.android.scrobbler.action.MUSIC_STATUS" />
     		</intent-filter>
     	</receiver>
     </application>
