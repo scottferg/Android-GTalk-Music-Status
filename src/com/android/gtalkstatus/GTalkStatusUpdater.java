@@ -6,11 +6,14 @@ import android.app.Service;
 import android.os.IBinder;
 import android.content.ComponentName;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.android.music.IMediaPlaybackService;
 
 public class GTalkStatusUpdater extends Service {
     
+    public static final String LOG_NAME = "GTalkStatusUpdater";
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -27,8 +30,7 @@ public class GTalkStatusUpdater extends Service {
     @Override
     public void onStart(Intent aIntent, int aStartId) {
 
-        if (aIntent.getAction().equals("com.android.music.playbackcomplete")
-                || aIntent.getAction().equals("com.htc.music.playbackcomplete")) {
+        if (aIntent.getAction().equals("com.android.music.playbackcomplete")) {
             // The song has ended, stop the service
             stopSelf();
         } else if (aIntent.getAction().equals("com.android.music.playstatechanged") 
