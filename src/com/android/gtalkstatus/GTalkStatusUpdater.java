@@ -2,11 +2,17 @@ package com.android.gtalkstatus;
 
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.Context;
+import android.widget.Toast;
 import android.app.Service;
 import android.os.IBinder;
 import android.content.ComponentName;
 import android.os.IBinder;
 import android.util.Log;
+
+import java.lang.CharSequence;
+import java.lang.IllegalStateException;
+import java.lang.NullPointerException;
 
 import com.android.music.IMediaPlaybackService;
 
@@ -60,6 +66,20 @@ public class GTalkStatusUpdater extends Service {
                             GTalkStatusApplication.getInstance().getConnector().disconnect();
                             stopSelf();
                         }
+                    } catch (IllegalStateException e) { 
+                        // Occurs if the user's credentials are invalid, or not provided
+                        CharSequence message = "Not connected to GTalk server.  Did you enter your username/password correctly?";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(getApplicationContext(), message, duration);
+
+                        toast.show();
+
+                        stopSelf();
+                    } catch (NullPointerException e) {
+                        // Occurs if the connection was never initialized
+                        Log.w(LOG_NAME, "Service was never connected!");
+                        stopSelf();
                     } catch (Exception e) {
                         e.printStackTrace();
                         throw new RuntimeException(e);
