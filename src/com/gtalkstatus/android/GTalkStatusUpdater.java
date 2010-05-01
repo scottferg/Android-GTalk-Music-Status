@@ -1,4 +1,4 @@
-package com.android.gtalkstatus;
+package com.gtalkstatus.android;
 
 import android.content.Intent;
 import android.content.ServiceConnection;

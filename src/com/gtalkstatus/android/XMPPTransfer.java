@@ -1,4 +1,4 @@
-package com.android.gtalkstatus;
+package com.gtalkstatus.android;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.XMPPConnection;

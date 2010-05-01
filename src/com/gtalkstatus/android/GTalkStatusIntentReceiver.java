@@ -1,4 +1,4 @@
-package com.android.gtalkstatus;
+package com.gtalkstatus.android;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

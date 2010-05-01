@@ -1,4 +1,4 @@
-package com.android.gtalkstatus;
+package com.gtalkstatus.android;
 
 import android.app.Application;
 import android.content.SharedPreferences;

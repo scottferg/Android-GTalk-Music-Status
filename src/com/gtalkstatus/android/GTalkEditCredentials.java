@@ -1,4 +1,4 @@
-package com.android.gtalkstatus;
+package com.gtalkstatus.android;
 
 import android.preference.DialogPreference;
 import android.content.Context;
