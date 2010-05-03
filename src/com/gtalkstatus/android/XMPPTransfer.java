@@ -27,7 +27,8 @@ public class XMPPTransfer {
 
     private XMPPConnection mConnection;
 
-    public XMPPTransfer(String aUsername, String aPassword) {
+    public XMPPTransfer(String aUsername, String aPassword) 
+        throws Exception {
 
         ConnectionConfiguration connectionConfig = 
             new ConnectionConfiguration("talk.google.com", 5222, "gmail.com");
@@ -37,10 +38,8 @@ public class XMPPTransfer {
         try {
             mConnection.connect();
             mConnection.login(aUsername, aPassword);
-
         } catch (XMPPException e) {
-            // Probably should handle this better
-            e.printStackTrace();
+            throw new Exception();
         }
     }
 

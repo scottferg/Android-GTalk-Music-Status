@@ -25,16 +25,21 @@ import android.util.AttributeSet;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.widget.EditText;
+import android.widget.Toast;
 import android.view.View;
 
 public class GTalkEditCredentials extends DialogPreference {
 
     private EditText mUsername;
     private EditText mPassword;
+    private Context mContext;
 
     public GTalkEditCredentials(Context aContext, AttributeSet aAttributes) {
 
         super(aContext, aAttributes);
+
+        mContext = aContext;
+
         setDialogLayoutResource(R.layout.credentials);
     }
 
@@ -57,7 +62,22 @@ public class GTalkEditCredentials extends DialogPreference {
             prefsEditor.putString("PASSWORD", mPassword.getText().toString());
             prefsEditor.commit();
 
-            GTalkStatusApplication.getInstance().updateConnection();
+            try {
+                GTalkStatusApplication.getInstance().updateConnection();
+            } catch (Exception e) {
+                notifyError();
+            }
         }
     }
+
+    public void notifyError() {
+        // Occurs if the user's credentials are invalid, or not provided
+        CharSequence message = "Error connecting to Google Talk server.  Did you enter your username/password correctly?";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(mContext, message, duration);
+
+        toast.show();
+    }
+
 }

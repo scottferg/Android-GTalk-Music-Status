@@ -22,6 +22,8 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.content.Intent;
 import android.content.Context;
+import android.app.Notification;
+import android.app.NotificationManager;
 
 public class GTalkStatusApplication extends Application {
 
@@ -44,7 +46,12 @@ public class GTalkStatusApplication extends Application {
 
         sInstance = this;
 
-        updateConnection();
+        try {
+            updateConnection();
+        } catch (Exception e) {
+            // Do nothing here.  If there is an error when attempting to connect, we'll want
+            // to catch it when the user tries playing music.
+        }
     }
 
     @Override
@@ -64,7 +71,7 @@ public class GTalkStatusApplication extends Application {
         aContext.startService(serviceIntent);
     }
 
-    public void updateConnection() {
+    public void updateConnection() throws Exception {
 
         if (mGTalkConnector != null) {
             mGTalkConnector.disconnect();
@@ -74,7 +81,11 @@ public class GTalkStatusApplication extends Application {
         String username = settings.getString("USERNAME", "");
         String password = settings.getString("PASSWORD", "");
 
-        mGTalkConnector = new XMPPTransfer(username, password);
+        try {
+            mGTalkConnector = new XMPPTransfer(username, password);
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
     }
 
     public XMPPTransfer getConnector() {

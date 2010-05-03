@@ -23,7 +23,8 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.Preference;
 import android.util.Log;
-import android.os.Debug;
+import android.content.Context;
+import android.app.NotificationManager;
 
 public class GTalkStatusActivity extends PreferenceActivity
 {
@@ -34,21 +35,12 @@ public class GTalkStatusActivity extends PreferenceActivity
     public void onCreate(Bundle mSavedInstanceState)
     {
         super.onCreate(mSavedInstanceState);
-        Debug.startMethodTracing("status");
 
         addPreferencesFromResource(R.layout.main);
 
         mCredentialsPreference = (GTalkEditCredentials) findPreference("edit_credentials");
 
-        mCredentialsPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference aPreference, Object aValue) {
-                Log.i("GTalkStatusActivity", aPreference.toString());
-                Log.i("GTalkStatusActivity", aValue.toString());
-
-                return true;
-            }
-        });
-        Debug.stopMethodTracing();
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
     }
 }
