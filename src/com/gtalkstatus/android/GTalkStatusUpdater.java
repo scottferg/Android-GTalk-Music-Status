@@ -1,3 +1,21 @@
+/***************************************************************************
+ *   Copyright 2010 Scott Ferguson                                         *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
+ ***************************************************************************/
 package com.gtalkstatus.android;
 
 import android.content.Intent;
@@ -25,12 +43,11 @@ public class GTalkStatusUpdater extends Service {
         super.onCreate();
     }
 
-    @Override
     public int onStartCommand(Intent aIntent, int aFlags, int aStartId) {
         
         onStart(aIntent, aStartId);
 
-        return START_NOT_STICKY;
+        return 2;
     }
 
     @Override
@@ -48,13 +65,13 @@ public class GTalkStatusUpdater extends Service {
                 public void onServiceConnected(ComponentName aName, IBinder aService) {
                     IMediaPlaybackService service = IMediaPlaybackService.Stub.asInterface(aService);
 
-                    // We disconnect from XMPP if we don't need to keep the connection alive.
-                    // Reconnect if necessary.
-                    if (! GTalkStatusApplication.getInstance().getConnector().isConnected()) {
-                        GTalkStatusApplication.getInstance().updateConnection();
-                    }
-
                     try {
+                        // We disconnect from XMPP if we don't need to keep the connection alive.
+                        // Reconnect if necessary.
+                        if (! GTalkStatusApplication.getInstance().getConnector().isConnected()) {
+                            GTalkStatusApplication.getInstance().updateConnection();
+                        }
+
                         String currentTrack = service.getTrackName();
                         String currentArtist = service.getArtistName();
 

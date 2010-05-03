@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"> 
     <PreferenceCategory android:title="Settings">
-        <com.android.gtalkstatus.GTalkEditCredentials
+        <com.gtalkstatus.android.GTalkEditCredentials
             android:title="GTalk Credentials"
             android:dialogTitle="GTalk Credentials"
             android:summary="Log into your GTalk account"
