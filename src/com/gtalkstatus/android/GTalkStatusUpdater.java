@@ -130,7 +130,42 @@ public class GTalkStatusUpdater extends Service {
                     mNotificationManager.notify(1, notification);
                 }
             }, 0);
-        }
+        } else if (aIntent.getAction().equals("com.gtalkstatus.android.updaterintent") {
+
+			Bundle extras = aIntent.getExtras();
+
+
+			try {
+                        // We disconnect from XMPP if we don't need to keep the connection alive.
+                        // Reconnect if necessary.
+                        if (! GTalkStatusApplication.getInstance().getConnector().isConnected()) {
+                            GTalkStatusApplication.getInstance().updateConnection();
+                        }
+
+                        String currentTrack = extras.get("track");
+                        String currentArtist = extras.get("artist");
+
+                        if (extras.get("state").equals("is_playing")) {
+                            String statusMessage = "\u266B " + currentArtist + " - " + currentTrack;
+
+                            GTalkStatusApplication.getInstance().getConnector().setStatus(statusMessage);
+                        } else {
+                            GTalkStatusApplication.getInstance().getConnector().disconnect();
+                            stopSelf();
+                        }
+                    } catch (IllegalStateException e) { 
+                        notifyError();
+                        stopSelf();
+                    } catch (NullPointerException e) {
+                        Log.w(LOG_NAME, "Service was never connected!");
+                        notifyError();
+                        stopSelf();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new RuntimeException(e);
+                    }
+
+		}
     }
 
     public IBinder onBind(Intent aIntent) {

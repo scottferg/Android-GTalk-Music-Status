@@ -17,7 +17,8 @@
                 <action android:name="com.android.music.playstatechanged"/>
                 <action android:name="com.android.music.playbackcomplete"/>
                 <action android:name="com.android.music.metachanged"/>
-                <action android:name="com.android.music.queuechanged"/>
+				<action android:name="com.android.music.queuechanged"/>
+				<action android:name="com.gtalkstatus.android.updaterintent"/>
     		</intent-filter>
     	</receiver>
     </application>
