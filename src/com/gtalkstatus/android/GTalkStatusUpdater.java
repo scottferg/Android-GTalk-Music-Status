@@ -63,6 +63,8 @@ public class GTalkStatusUpdater extends Service {
     @Override
     public void onStart(Intent aIntent, int aStartId) {
 
+		Log.d(LOG_NAME, aIntent.getAction());
+
         if (aIntent.getAction().equals("com.android.music.playbackcomplete")) {
             // The song has ended, stop the service
             stopSelf();
@@ -133,6 +135,7 @@ public class GTalkStatusUpdater extends Service {
             }, 0);
         } else if (aIntent.getAction().equals("com.gtalkstatus.android.updaterintent")) {
 
+			Log.d(LOG_NAME, "Found Generic Intent");
 			Bundle extras = aIntent.getExtras();
 
 
@@ -146,7 +149,10 @@ public class GTalkStatusUpdater extends Service {
                         String currentTrack = extras.getString("track");
                         String currentArtist = extras.getString("artist");
 
-                        if (extras.get("state").equals("is_playing")) {
+
+						Log.d(LOG_NAME, extras.getString("state"));
+
+                        if (extras.getString("state").equals("is_playing")) {
                             String statusMessage = "\u266B " + currentArtist + " - " + currentTrack;
 
                             GTalkStatusApplication.getInstance().getConnector().setStatus(statusMessage);
