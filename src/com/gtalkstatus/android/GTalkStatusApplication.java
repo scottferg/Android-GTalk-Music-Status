@@ -92,4 +92,5 @@ public class GTalkStatusApplication extends Application {
 
         return mGTalkConnector;
     }
+	
 }
