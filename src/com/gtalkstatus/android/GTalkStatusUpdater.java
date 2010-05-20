@@ -26,6 +26,7 @@ import android.app.Service;
 import android.os.IBinder;
 import android.content.ComponentName;
 import android.os.IBinder;
+import android.os.Bundle;
 import android.util.Log;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -130,7 +131,7 @@ public class GTalkStatusUpdater extends Service {
                     mNotificationManager.notify(1, notification);
                 }
             }, 0);
-        } else if (aIntent.getAction().equals("com.gtalkstatus.android.updaterintent") {
+        } else if (aIntent.getAction().equals("com.gtalkstatus.android.updaterintent")) {
 
 			Bundle extras = aIntent.getExtras();
 
@@ -142,8 +143,8 @@ public class GTalkStatusUpdater extends Service {
                             GTalkStatusApplication.getInstance().updateConnection();
                         }
 
-                        String currentTrack = extras.get("track");
-                        String currentArtist = extras.get("artist");
+                        String currentTrack = extras.getString("track");
+                        String currentArtist = extras.getString("artist");
 
                         if (extras.get("state").equals("is_playing")) {
                             String statusMessage = "\u266B " + currentArtist + " - " + currentTrack;
@@ -154,11 +155,9 @@ public class GTalkStatusUpdater extends Service {
                             stopSelf();
                         }
                     } catch (IllegalStateException e) { 
-                        notifyError();
                         stopSelf();
                     } catch (NullPointerException e) {
                         Log.w(LOG_NAME, "Service was never connected!");
-                        notifyError();
                         stopSelf();
                     } catch (Exception e) {
                         e.printStackTrace();
