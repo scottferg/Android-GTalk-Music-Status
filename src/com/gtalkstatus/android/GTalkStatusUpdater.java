@@ -28,8 +28,6 @@ import android.content.ComponentName;
 import android.os.IBinder;
 import android.os.Bundle;
 import android.util.Log;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 
 import java.lang.CharSequence;
@@ -44,13 +42,10 @@ public class GTalkStatusUpdater extends Service {
     
     public static final String LOG_NAME = "GTalkStatusUpdater";
 
-    private NotificationManager mNotificationManager;
-
     @Override
     public void onCreate() {
         super.onCreate();
-
-        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        
     }
 
     public int onStartCommand(Intent aIntent, int aFlags, int aStartId) {
@@ -96,11 +91,11 @@ public class GTalkStatusUpdater extends Service {
                             stopSelf();
                         }
                     } catch (IllegalStateException e) { 
-                        notifyError();
+						GTalkStatusNotifier.notify(GTalkStatusApplication.getInstance(), GTalkStatusNotifier.ERROR);
                         stopSelf();
                     } catch (NullPointerException e) {
                         Log.w(LOG_NAME, "Service was never connected!");
-                        notifyError();
+                        GTalkStatusNotifier.notify(GTalkStatusApplication.getInstance(), GTalkStatusNotifier.ERROR);
                         stopSelf();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -114,24 +109,6 @@ public class GTalkStatusUpdater extends Service {
                     GTalkStatusApplication.getInstance().getConnector().setStatus("", 0);
                 }
 
-                public void notifyError() {
-                    // Occurs if the connection was never initialized
-                    int icon = android.R.drawable.stat_notify_error;
-                    CharSequence notificationText = "GTalk Status error";
-                    long when = System.currentTimeMillis();
-
-                    Notification notification = new Notification(icon, notificationText, when);
-
-                    CharSequence title = "Music Status Error";
-                    CharSequence text = "Music Status was unable to connect to the Google Talk server.  Did you enter your username and password correctly?";
-
-                    Intent notificationIntent = new Intent(getApplicationContext(), GTalkStatusActivity.class);
-                    PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, 0);
-
-                    notification.setLatestEventInfo(getApplicationContext(), title, text, contentIntent);
-
-                    mNotificationManager.notify(1, notification);
-                }
             }, 0);
         } else if (aIntent.getAction().equals("com.gtalkstatus.android.updaterintent")) {
 
@@ -161,39 +138,25 @@ public class GTalkStatusUpdater extends Service {
                             stopSelf();
                         }
                     } catch (IllegalStateException e) { 
-						notifyError();
+						GTalkStatusNotifier.notify(this, GTalkStatusNotifier.ERROR);
                         stopSelf();
                     } catch (NullPointerException e) {
                         Log.w(LOG_NAME, "Service was never connected!");
-						notifyError();
+						GTalkStatusNotifier.notify(this, GTalkStatusNotifier.ERROR);
+                        stopSelf();
+					} catch (XMPPException e) {
+						Log.w(LOG_NAME, "XMPPException");
+						GTalkStatusNotifier.notify(this, GTalkStatusNotifier.ERROR);
                         stopSelf();
                     } catch (Exception e) {
                         e.printStackTrace();
+						Log.e(LOG_NAME, e.toString());
                         throw new RuntimeException(e);
                     }
 
 		}
     }
-
-	public void notifyError() {
-        // Occurs if the connection was never initialized
-        int icon = android.R.drawable.stat_notify_error;
-        CharSequence notificationText = "GTalk Status error";
-        long when = System.currentTimeMillis();
-
-        Notification notification = new Notification(icon, notificationText, when);
-
-        CharSequence title = "Music Status Error";
-        CharSequence text = "Music Status was unable to connect to the Google Talk server.  Did you enter your username and password correctly?";
-
-        Intent notificationIntent = new Intent(getApplicationContext(), GTalkStatusActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, 0);
-
-        notification.setLatestEventInfo(getApplicationContext(), title, text, contentIntent);
-
-        mNotificationManager.notify(1, notification);
-	}
-                
+               
 
     public IBinder onBind(Intent aIntent) {
 

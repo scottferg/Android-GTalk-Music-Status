@@ -7,6 +7,14 @@
             android:summary="Log into your GTalk account"
             android:positiveButtonText="Okay"
             android:negativeButtonText="Cancel"
-            android:key="edit_credentials" />
+			android:key="edit_credentials" />
+
+		<CheckBoxPreference android:defaultValue="true"
+			android:summary="Enable Error Notifications"
+			android:summaryOn="Notifications are on!"
+			android:key="error_notifications"
+			android:summaryOff="Notifications are off!"
+			android:title="Error Notifications" />
+		
     </PreferenceCategory>
 </PreferenceScreen>
