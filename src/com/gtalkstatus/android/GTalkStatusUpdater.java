@@ -91,11 +91,11 @@ public class GTalkStatusUpdater extends Service {
                             stopSelf();
                         }
                     } catch (IllegalStateException e) { 
-						GTalkStatusNotifier.notify(GTalkStatusApplication.getInstance(), GTalkStatusNotifier.ERROR);
+						GTSNotifier.notify(GTalkStatusApplication.getInstance(), GTSNotifier.ERROR);
                         stopSelf();
                     } catch (NullPointerException e) {
                         Log.w(LOG_NAME, "Service was never connected!");
-                        GTalkStatusNotifier.notify(GTalkStatusApplication.getInstance(), GTalkStatusNotifier.ERROR);
+                        GTSNotifier.notify(GTalkStatusApplication.getInstance(), GTSNotifier.ERROR);
                         stopSelf();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -138,15 +138,15 @@ public class GTalkStatusUpdater extends Service {
                             stopSelf();
                         }
                     } catch (IllegalStateException e) { 
-						GTalkStatusNotifier.notify(this, GTalkStatusNotifier.ERROR);
+						GTSNotifier.notify(this, GTSNotifier.ERROR);
                         stopSelf();
                     } catch (NullPointerException e) {
                         Log.w(LOG_NAME, "Service was never connected!");
-						GTalkStatusNotifier.notify(this, GTalkStatusNotifier.ERROR);
+						GTSNotifier.notify(this, GTSNotifier.ERROR);
                         stopSelf();
 					} catch (XMPPException e) {
 						Log.w(LOG_NAME, "XMPPException");
-						GTalkStatusNotifier.notify(this, GTalkStatusNotifier.ERROR);
+						GTSNotifier.notify(this, GTSNotifier.ERROR);
                         stopSelf();
                     } catch (Exception e) {
                         e.printStackTrace();
