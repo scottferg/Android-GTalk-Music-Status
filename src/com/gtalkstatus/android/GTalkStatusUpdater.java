@@ -114,6 +114,60 @@ public class GTalkStatusUpdater extends Service {
                 }
 
             }, 0);
+        } else if ((aIntent.getAction().equals("com.htc.music.playstatechanged") && aIntent.getIntExtra("id", -1) != -1)
+                || aIntent.getAction().equals("com.htc.music.metachanged")) {
+
+            /** EXPERIMENTAL HTC MUSIC PLAYER SUPPORT **/
+
+            bindService(new Intent().setClassName("com.htc.music", "com.htc.music.MediaPlaybackService"), new ServiceConnection() {
+
+                public void onServiceConnected(ComponentName aName, IBinder aService) {
+
+                    com.htc.music.IMediaPlaybackService s = com.htc.music.IMediaPlaybackService.Stub.asInterface(aService);
+
+                    IMediaPlaybackService service = IMediaPlaybackService.Stub.asInterface(aService);
+
+                    try {
+                        // We disconnect from XMPP if we don't need to keep the connection alive.
+                        // Reconnect if necessary.
+                        if (! GTalkStatusApplication.getInstance().getConnector().isConnected()) {
+                            GTalkStatusApplication.getInstance().updateConnection();
+                        }
+
+                        String currentTrack = service.getTrackName();
+                        String currentArtist = service.getArtistName();
+
+                        if (service.isPlaying()) {
+                            String statusMessage = "\u266B " + currentArtist + " - " + currentTrack;
+
+                            GTalkStatusApplication.getInstance().getConnector().setStatus(statusMessage);
+                        } else {
+                            GTalkStatusApplication.getInstance().getConnector().disconnect();
+                            stopSelf();
+                        }
+                    } catch (IllegalStateException e) { 
+                        GTalkStatusNotifier.notify(GTalkStatusApplication.getInstance(), GTalkStatusNotifier.ERROR);
+                        stopSelf();
+                    } catch (NullPointerException e) {
+                        Log.w(LOG_NAME, "Service was never connected!");
+                        GTalkStatusNotifier.notify(GTalkStatusApplication.getInstance(), GTalkStatusNotifier.ERROR);
+                        stopSelf();
+                    } catch (XMPPException e) {
+                        Log.w(LOG_NAME, "No connection to XMPP server!");
+                        GTalkStatusNotifier.notify(GTalkStatusApplication.getInstance(), GTalkStatusNotifier.ERROR);
+                        stopSelf();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new RuntimeException(e);
+                    }
+
+                    unbindService(this);
+                }
+
+                public void onServiceDisconnected(ComponentName aName) {
+                    GTalkStatusApplication.getInstance().getConnector().setStatus("", 0);
+                }
+            }, 0);
         } else if (aIntent.getAction().equals("com.gtalkstatus.android.updaterintent")) {
 
             Log.d(LOG_NAME, "Found Generic Intent");
@@ -156,7 +210,6 @@ public class GTalkStatusUpdater extends Service {
                 Log.e(LOG_NAME, e.toString());
                 throw new RuntimeException(e);
             }
-
         }
     }
                
