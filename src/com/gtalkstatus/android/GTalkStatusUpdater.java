@@ -91,11 +91,15 @@ public class GTalkStatusUpdater extends Service {
                             stopSelf();
                         }
                     } catch (IllegalStateException e) { 
-						GTSNotifier.notify(GTalkStatusApplication.getInstance(), GTSNotifier.ERROR);
+						GTalkStatusNotifier.notify(GTalkStatusApplication.getInstance(), GTalkStatusNotifier.ERROR);
                         stopSelf();
                     } catch (NullPointerException e) {
                         Log.w(LOG_NAME, "Service was never connected!");
-                        GTSNotifier.notify(GTalkStatusApplication.getInstance(), GTSNotifier.ERROR);
+                        GTalkStatusNotifier.notify(GTalkStatusApplication.getInstance(), GTalkStatusNotifier.ERROR);
+                        stopSelf();
+                    } catch (XMPPException e) {
+                        Log.w(LOG_NAME, "No connection to XMPP server!");
+                        GTalkStatusNotifier.notify(GTalkStatusApplication.getInstance(), GTalkStatusNotifier.ERROR);
                         stopSelf();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -112,49 +116,48 @@ public class GTalkStatusUpdater extends Service {
             }, 0);
         } else if (aIntent.getAction().equals("com.gtalkstatus.android.updaterintent")) {
 
-			Log.d(LOG_NAME, "Found Generic Intent");
-			Bundle extras = aIntent.getExtras();
+            Log.d(LOG_NAME, "Found Generic Intent");
+            Bundle extras = aIntent.getExtras();
+
+            try {
+                // We disconnect from XMPP if we don't need to keep the connection alive.
+                // Reconnect if necessary.
+                if (! GTalkStatusApplication.getInstance().getConnector().isConnected()) {
+                    GTalkStatusApplication.getInstance().updateConnection();
+                }
+
+                String currentTrack = extras.getString("track");
+                String currentArtist = extras.getString("artist");
 
 
-			try {
-                        // We disconnect from XMPP if we don't need to keep the connection alive.
-                        // Reconnect if necessary.
-                        if (! GTalkStatusApplication.getInstance().getConnector().isConnected()) {
-                            GTalkStatusApplication.getInstance().updateConnection();
-                        }
+                Log.d(LOG_NAME, extras.getString("state"));
 
-                        String currentTrack = extras.getString("track");
-                        String currentArtist = extras.getString("artist");
+                if (extras.getString("state").equals("is_playing")) {
+                    String statusMessage = "\u266B " + currentArtist + " - " + currentTrack;
 
+                    GTalkStatusApplication.getInstance().getConnector().setStatus(statusMessage);
+                } else {
+                    GTalkStatusApplication.getInstance().getConnector().disconnect();
+                    stopSelf();
+                }
+            } catch (IllegalStateException e) { 
+                GTalkStatusNotifier.notify(this, GTalkStatusNotifier.ERROR);
+                stopSelf();
+            } catch (NullPointerException e) {
+                Log.w(LOG_NAME, "Service was never connected!");
+                GTalkStatusNotifier.notify(this, GTalkStatusNotifier.ERROR);
+                stopSelf();
+            } catch (XMPPException e) {
+                Log.w(LOG_NAME, "XMPPException");
+                GTalkStatusNotifier.notify(this, GTalkStatusNotifier.ERROR);
+                stopSelf();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(LOG_NAME, e.toString());
+                throw new RuntimeException(e);
+            }
 
-						Log.d(LOG_NAME, extras.getString("state"));
-
-                        if (extras.getString("state").equals("is_playing")) {
-                            String statusMessage = "\u266B " + currentArtist + " - " + currentTrack;
-
-                            GTalkStatusApplication.getInstance().getConnector().setStatus(statusMessage);
-                        } else {
-                            GTalkStatusApplication.getInstance().getConnector().disconnect();
-                            stopSelf();
-                        }
-                    } catch (IllegalStateException e) { 
-						GTSNotifier.notify(this, GTSNotifier.ERROR);
-                        stopSelf();
-                    } catch (NullPointerException e) {
-                        Log.w(LOG_NAME, "Service was never connected!");
-						GTSNotifier.notify(this, GTSNotifier.ERROR);
-                        stopSelf();
-					} catch (XMPPException e) {
-						Log.w(LOG_NAME, "XMPPException");
-						GTSNotifier.notify(this, GTSNotifier.ERROR);
-                        stopSelf();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-						Log.e(LOG_NAME, e.toString());
-                        throw new RuntimeException(e);
-                    }
-
-		}
+        }
     }
                
 

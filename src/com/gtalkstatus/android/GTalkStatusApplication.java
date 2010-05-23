@@ -83,11 +83,7 @@ public class GTalkStatusApplication extends Application {
         String username = settings.getString("USERNAME", "");
         String password = settings.getString("PASSWORD", "");
 
-        try {
-            mGTalkConnector = new XMPPTransfer(username, password);
-        } catch (Exception e) {
-            throw new XMPPException(e);
-        }
+        mGTalkConnector = new XMPPTransfer(username, password);
     }
 
     public XMPPTransfer getConnector() {

@@ -52,7 +52,8 @@ public class XMPPTransfer {
     }
 
     public void setStatus(String aStatusMessage) {
-        setStatus(aStatusMessage, 45);
+        // Turn it up to 11
+        setStatus(aStatusMessage, 100);
     }
 
     public void setStatus(String aStatusMessage, int aPriority) {
