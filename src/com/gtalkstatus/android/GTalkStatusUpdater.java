@@ -168,7 +168,7 @@ public class GTalkStatusUpdater extends Service {
                     GTalkStatusApplication.getInstance().getConnector().setStatus("", 0);
                 }
             }, 0);
-        } else if (aIntent.getAction().equals("com.gtalkstatus.android.updaterintent")) {
+        } else if (aIntent.getAction().equals("com.gtalkstatus.android.statusupdate")) {
 
             Log.d(LOG_NAME, "Found Generic Intent");
             Bundle extras = aIntent.getExtras();
