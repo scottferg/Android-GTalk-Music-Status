@@ -34,6 +34,8 @@ import java.lang.CharSequence;
 import java.lang.IllegalStateException;
 import java.lang.NullPointerException;
 
+import java.util.*;
+
 import org.jivesoftware.smack.XMPPException; 
 
 import com.android.music.IMediaPlaybackService;
@@ -63,6 +65,45 @@ public class GTalkStatusUpdater extends Service {
         if (aIntent.getAction().equals("com.android.music.playbackcomplete")) {
             // The song has ended, stop the service
             stopSelf();
+        } else if (aIntent.getAction().equals("com.doubleTwist.androidPlayer.playbackcomplete")) {
+            // The song has ended, stop the service
+            stopSelf();
+        } else if (aIntent.getAction().equals("com.doubleTwist.androidPlayer.playstatechanged")
+            || aIntent.getAction().equals("com.doubleTwist.androidPlayer.metachanged")) {
+
+            try {
+                // We disconnect from XMPP if we don't need to keep the connection alive.
+                // Reconnect if necessary.
+                if (! GTalkStatusApplication.getInstance().getConnector().isConnected()) {
+                    GTalkStatusApplication.getInstance().updateConnection();
+                }
+
+                String currentTrack = aIntent.getStringExtra("artist");
+                String currentArtist = aIntent.getStringExtra("track");
+
+                if (aIntent.getBooleanExtra("playing", false)) {
+                    String statusMessage = "\u266B " + currentArtist + " - " + currentTrack;
+
+                    GTalkStatusApplication.getInstance().getConnector().setStatus(statusMessage);
+                } else {
+                    GTalkStatusApplication.getInstance().getConnector().disconnect();
+                    stopSelf();
+                }
+            } catch (IllegalStateException e) { 
+                GTalkStatusNotifier.notify(GTalkStatusApplication.getInstance(), GTalkStatusNotifier.ERROR);
+                stopSelf();
+            } catch (NullPointerException e) {
+                Log.w(LOG_NAME, "Service was never connected!");
+                GTalkStatusNotifier.notify(GTalkStatusApplication.getInstance(), GTalkStatusNotifier.ERROR);
+                stopSelf();
+            } catch (XMPPException e) {
+                Log.w(LOG_NAME, "No connection to XMPP server!");
+                GTalkStatusNotifier.notify(GTalkStatusApplication.getInstance(), GTalkStatusNotifier.ERROR);
+                stopSelf();
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
         } else if (aIntent.getAction().equals("com.android.music.playstatechanged") 
                 || aIntent.getAction().equals("com.android.music.metachanged")
                 || aIntent.getAction().equals("com.android.music.queuechanged")) {
