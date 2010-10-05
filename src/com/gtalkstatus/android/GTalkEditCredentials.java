@@ -64,6 +64,8 @@ public class GTalkEditCredentials extends DialogPreference {
 
             try {
                 GTalkStatusApplication.getInstance().updateConnection();
+                prefsEditor.putBoolean("LOGGEDIN", true);
+                prefsEditor.commit();
             } catch (Exception e) {
                 notifyError();
             }

@@ -1,20 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"> 
-    <PreferenceCategory android:title="Settings">
-        <com.gtalkstatus.android.GTalkEditCredentials
-            android:title="GTalk Credentials"
-            android:dialogTitle="GTalk Credentials"
-            android:summary="Log into your GTalk account"
-            android:positiveButtonText="Okay"
-            android:negativeButtonText="Cancel"
-			android:key="edit_credentials" />
-
-		<CheckBoxPreference android:defaultValue="true"
-			android:summary="Enable Error Notifications"
-			android:summaryOn="Notifications are on!"
-			android:key="error_notifications"
-			android:summaryOff="Notifications are off!"
-			android:title="Error Notifications" />
-		
-    </PreferenceCategory>
-</PreferenceScreen>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.gtalkstatus.android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="4dip"
+    android:orientation="vertical"
+    >
+    <com.admob.android.ads.AdView  
+        android:id="@+id/ad" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:backgroundColor="#000000"
+        app:primaryTextColor="#FFFFFF"
+        app:secondaryTextColor="#CCCCCC"
+        app:keywords="GTalk Music Status" 
+        />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dip"
+        >
+        <TextView
+            android:id="@+id/account_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/account_status"
+            android:textStyle="bold"
+            android:textSize="16dip"
+        />
+        <TextView
+            android:id="@+id/account_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/account_title"
+            android:layout_marginTop="2dip"
+            android:layout_marginLeft="2dip"
+            android:textSize="16dip"
+        />
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/current_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dip"
+        android:text="@string/music_status"
+        android:textStyle="bold"
+        android:textSize="16dip"
+    />
+    <TextView
+        android:id="@+id/current_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dip"
+        android:textSize="16dip"
+    />
+    <ViewStub
+        android:id="@+id/no_current_track_view"
+        android:inflatedId="@+id/track_view"
+        android:layout="@layout/no_current_track_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
+    <ViewStub
+        android:id="@+id/current_playing_track_view"
+        android:inflatedId="@+id/track_view"
+        android:layout="@layout/current_playing_track_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
+</LinearLayout>
